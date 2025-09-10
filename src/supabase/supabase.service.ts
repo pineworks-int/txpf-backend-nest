@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 
 @Injectable()
 export class SupabaseService {
@@ -22,7 +22,7 @@ export class SupabaseService {
     return this.supabase;
   }
 
-  async validateToken(token: string): Promise<{ valid: boolean; user?: any }> {
+  async validateToken(token: string): Promise<{ valid: boolean; user?: User }> {
     try {
       const {
         data: { user },
@@ -34,8 +34,7 @@ export class SupabaseService {
       }
 
       return { valid: true, user };
-    } catch (error) {
-      console.error('Error validating token:', error);
+    } catch {
       return { valid: false };
     }
   }
