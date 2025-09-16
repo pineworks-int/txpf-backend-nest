@@ -12,7 +12,9 @@ async function bootstrap() {
         'http://localhost:5173',
         'http://localhost:4000',
       ]
-    : process.env.CORS_ORIGINS_PROD?.split(',') || [];
+    : process.env.CORS_ORIGINS_PROD?.split(',') || [
+        'https://tdbs.nspace.link'
+    ];
 
   app.enableCors({
     origin: allowedOrigins,

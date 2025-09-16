@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   HttpCode,
 } from '@nestjs/common';
+
 import { AuthService } from './auth.service';
 import { ValidateResponse } from './auth.types';
 import { ValidateTokenDto } from './dto/validate-token.dto';
