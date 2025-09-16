@@ -16,8 +16,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    outputs:
-      image-tags: ${{ steps.meta.outputs.tags }}  # ← Export la variable
 
     steps:
     - name: Checkout repository
@@ -38,23 +36,13 @@ jobs:
         tags: |
           type=ref,event=branch
           type=ref,event=pr
-          type=sha,prefix={{branch}}
+          type=sha,prefix={{branch}}-
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         context: .
-        push: true
+        push: ${{ github.ref == 'refs/heads/main' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Trigger deployment
-      run: |
-        echo "Image built and pushed: ${{ needs.build-and-push.outputs.image-tags }}"
